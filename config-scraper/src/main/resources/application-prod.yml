@@ -1,0 +1,7 @@
+spring:
+    cloud:
+        config:
+            server:
+                git:
+                    uri: https://github.com/jerome74/scraper-html-prop.git
+                    skip-ssl-validation: true

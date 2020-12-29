@@ -11,6 +11,7 @@ import org.springframework.batch.core.configuration.annotation.EnableBatchProces
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.PropertySource
@@ -66,4 +67,18 @@ class ConfigProperties
     lateinit var env : Environment
 
     fun getPropertes(prop: String) : String? = env.getProperty(prop)
+}
+
+@Component
+@ConfigurationProperties(prefix = "scraping")
+class ConfigScrape{
+    var link = ""
+    var keyword = ""
+    var price = ""
+}
+
+@Component
+@ConfigurationProperties(prefix = "scheduling")
+class ConfigSchedule{
+
 }

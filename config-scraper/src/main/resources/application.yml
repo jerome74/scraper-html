@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: cloud-scraper
+  profiles:
+    active: dev
+server:
+  port: 8888
