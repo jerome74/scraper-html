@@ -22,6 +22,7 @@ class LinkReader : ItemReader<AmazonItem> {
 
         amazonLink  = jobParameters.getString("amazonLink").orEmpty()
         jobParameters.parameters.remove("amazonLink")
+        jobParameters.parameters.remove("UUID")
 
         log.info("[LinkReader] remove value of start parameters, amazonLink = $amazonLink, price = $price ")
     }
@@ -44,7 +45,6 @@ class LinkReader : ItemReader<AmazonItem> {
                 log.info("[LinkReader] pre Parameters.linksScaper size = ${Parameters.linksScaper.size}")
 
                 amazonLink = Parameters.linksScaper.last().link
-                price = Parameters.linksScaper.last().price
 
                 Parameters.linksScaper.removeLast()
 
@@ -59,7 +59,7 @@ class LinkReader : ItemReader<AmazonItem> {
             }
             else -> {
 
-                val amazonItem = AmazonItem("AmazonItem", 0.0, amazonLink!!)
+                val amazonItem = AmazonItem("AmazonItem", amazonLink!!)
 
                 amazonLink = null
 

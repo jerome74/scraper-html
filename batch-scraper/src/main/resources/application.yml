@@ -1,4 +1,17 @@
 spring:
+  cloud:
+    config:
+      enable: true
+      uri: http://localhost:8888
+      name: scraperhtml-prop
+      profile: dev
+      label: main
+    loadbalancer:
+      ribbon:
+        enabled: false
+    health:
+      config:
+        enabled: false
   batch:
     job:
       enabled: false
@@ -9,19 +22,7 @@ spring:
   jpa: database-platform:org.hibernate.dialect.H2Dialect
   application:
     name: batch-scraper
-  cloud:
-    config:
-      enabled: true
-      uri: http://localhost:8888
-      name: scraper-html-prop
-      profile: dev
-      label: master
-    loadbalancer:
-      ribbon:
-        enabled: false
-    health:
-      config:
-        enabled: false
+
 server:
   port: 8081
 eureka:

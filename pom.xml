@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.4.1</version>
+		<version>2.3.3.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>it.wlp</groupId>
@@ -13,10 +13,20 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>scraper-html</name>
 	<description>scraper-html project for Spring Boot</description>
+	<packaging>pom</packaging>
+
+	<modules>
+		<module>dto</module>
+		<module>config-scraper</module>
+		<module>batch-scraper</module>
+		<module>checkout-rest-scraper</module>
+		<module>eureka-scraper-server</module>
+	</modules>
 
 	<properties>
 		<java.version>11</java.version>
 		<kotlin.version>1.4.21</kotlin.version>
+		<spring-cloud.version>2020.0.0-M6</spring-cloud.version>
 	</properties>
 
 	<dependencies>
@@ -51,6 +61,13 @@
 			<artifactId>spring-batch-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>com.github.xabgesagtx</groupId>
+			<artifactId>telegram-spring-boot-starter</artifactId>
+			<version>0.24</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

@@ -7,9 +7,9 @@ spring:
     config:
       enabled: true
       uri: http://localhost:8888
-      name: scraper-html-prop
+      name: scraperhtml-prop
       profile: dev
-      label: master
+      label: main
     loadbalancer:
       ribbon:
         enabled: false

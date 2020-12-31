@@ -25,7 +25,8 @@ class WebScrapingProcess : ItemProcessor<AmazonItem, List<AmazonItem>> {
         priceblock_ourprice?.let {
             if(doc.title().contains(Parameters.keyword!!) && !Parameters.linksScaperBlackList.contains(doc.title()) ) {
 
-                Parameters.linksScaperFound.add(AmazonItem(doc.title(), UtilFunString.getPrice(it.text()), item.link))
+                Parameters.linksScaperFound.add(AmazonItem(doc.title(), item.link))
+                Parameters.linksScaperBlackList.add(doc.title())
                 log.info("[WebScrapingProcess](priceblock_ourprice) add - ${doc.title()} - AmazonItem to linksScaperFound size = ${Parameters.linksScaperFound.size}")
             }
         }
@@ -33,9 +34,10 @@ class WebScrapingProcess : ItemProcessor<AmazonItem, List<AmazonItem>> {
         val olp_text_box  = doc.body().getElementsByClass("olp-text-box").select("span[class=a-size-base a-color-base]")
 
         if(olp_text_box.size > 0){
-                if(doc.title().contains(Parameters.keyword!!) ) {
+                if(doc.title().contains(Parameters.keyword!!)  && !Parameters.linksScaperBlackList.contains(doc.title())  ) {
 
-                    Parameters.linksScaperFound.add(AmazonItem(doc.title(), UtilFunString.getPrice(olp_text_box.first().text()), item.link))
+                    Parameters.linksScaperFound.add(AmazonItem(doc.title(), item.link))
+                    Parameters.linksScaperBlackList.add(doc.title())
                     log.info("[WebScrapingProcess](olp_text_box) add - ${doc.title()} - AmazonItem to linksScaperFound size = ${Parameters.linksScaperFound.size}")
                 }
         }
@@ -54,7 +56,7 @@ class WebScrapingProcess : ItemProcessor<AmazonItem, List<AmazonItem>> {
                                 // inserisco in array di appoggio tutti i titoli priva di riversarli nella lista sraper
                                 Parameters.linksScaperBlackList.add(a_href_Doc.title())
 
-                                val amazonItem = AmazonItem(a_href_Doc.title(), UtilFunString.getPrice(it.text()), "https://www.amazon.it${it.attr("href")}")
+                                val amazonItem = AmazonItem(a_href_Doc.title(), "https://www.amazon.it${it.attr("href")}")
 
                                 amazonItems.add(amazonItem)
                                 Parameters.linksScaperFound.add(amazonItem)

@@ -3,5 +3,5 @@ spring:
         config:
             server:
                 git:
-                    uri: file:///${user.home}/dev/scraper-html-prop
+                    uri: file:///${user.home}/dev/scraperhtml-prop
                     skip-ssl-validation: true

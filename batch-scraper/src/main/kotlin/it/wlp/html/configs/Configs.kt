@@ -16,7 +16,11 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.PropertySource
 import org.springframework.core.env.Environment
+import org.springframework.scheduling.annotation.AsyncConfigurer
+import org.springframework.scheduling.annotation.EnableAsync
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
 import org.springframework.stereotype.Component
+import java.util.concurrent.Executor
 
 @Configuration
 @EnableBatchProcessing
@@ -74,11 +78,32 @@ class ConfigProperties
 class ConfigScrape{
     var link = ""
     var keyword = ""
-    var price = ""
+    var price : Double = 0.0
+    var checkoutlink = ""
 }
 
 @Component
 @ConfigurationProperties(prefix = "scheduling")
 class ConfigSchedule{
+    var repeat : Int = 0
+    var timeout : Long = 0L
+    var delay : Long = 0L
+}
+
+@EnableAsync
+class BatchRestAsyncConfigurer : AsyncConfigurer {
+
+    @Bean("asyncExecutor")
+    override fun getAsyncExecutor(): Executor? {
+        val executor = ThreadPoolTaskExecutor();
+
+        executor.setCorePoolSize(5);
+        executor.setMaxPoolSize(20);
+        executor.setQueueCapacity(10);
+        executor.setThreadNamePrefix("BatchRestAsync-");
+        executor.initialize();
+        return executor;
+    }
+
 
 }

@@ -7,7 +7,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@EnableFeignClients(basePackages = ["it.wlp.api.html.proxies"])
+@EnableFeignClients(basePackages = ["it.wlp.html.proxies"])
 class BatchScraperApplication
 
 fun main(args: Array<String>) {

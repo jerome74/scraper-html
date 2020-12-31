@@ -3,6 +3,6 @@ spring:
         config:
             server:
                 git:
-                        uri: https://github.com/jerome74/scraper-html-prop.git
+                    uri: https://github.com/jerome74/scraperhtml-prop.git
                     skip-ssl-validation: true
                     timeout: 60
