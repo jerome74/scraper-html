@@ -1,0 +1,66 @@
+version: '3'
+services:
+    config-scraper:
+        build: ./config-scraper
+        working_dir: /config-scraper
+        volumes:
+            - ./config-scraper:/config-scraper
+            - ~/.m2:/root/.m2
+        networks:
+            - cloud-native-network
+        expose:
+            - 8888
+        ports:
+            - 8888:8888
+        command: mvn clean spring-boot:run
+        restart: always
+    eureka-scraper-server:
+        build: ./eureka-scraper-server
+        working_dir: /eureka-scraper-server
+        volumes:
+            - ./eureka-scraper-server:/eureka-scraper-server
+            - ~/.m2:/root/.m2
+        networks:
+            - cloud-native-network
+        expose:
+            - 8761
+        ports:
+            - 8761:8761
+        command: mvn clean spring-boot:run
+        restart: always
+        depends_on:
+            - config-scraper
+    batch-scraper:
+        build: ./batch-scraper
+        working_dir: /batch-scraper
+        volumes:
+            - ./batch-scraper:/batch-scraper
+            - ~/.m2:/root/.m2
+        networks:
+            - cloud-native-network
+        expose:
+            - 8081
+        ports:
+            - 8081:8081
+        command: mvn clean spring-boot:run
+        restart: always
+        depends_on:
+            - eureka-scraper-server
+    checkout-rest-scraper:
+        build: ./checkout-rest-scraper
+        working_dir: /checkout-rest-scraper
+        volumes:
+            - ./checkout-rest-scraper:/checkout-rest-scraper
+            - ~/.m2:/root/.m2
+        networks:
+            - cloud-native-network
+        expose:
+            - 8082
+        ports:
+            - 8082:8082
+        command: mvn clean spring-boot:run
+        restart: always
+        depends_on:
+            - batch-scraper
+networks:
+    cloud-native-network:

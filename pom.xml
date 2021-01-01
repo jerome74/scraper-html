@@ -17,8 +17,8 @@
 
 	<modules>
 		<module>dto</module>
-		<module>config-scraper</module>
 		<module>batch-scraper</module>
+		<module>config-scraper</module>
 		<module>checkout-rest-scraper</module>
 		<module>eureka-scraper-server</module>
 	</modules>
