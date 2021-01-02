@@ -1,7 +1,8 @@
 version: '3'
 services:
-    config-scraper:
+    config-server:
         build: ./config-scraper
+        container_name: config-scraper
         working_dir: /config-scraper
         volumes:
             - ./config-scraper:/config-scraper
@@ -11,7 +12,8 @@ services:
         expose:
             - 8888
         ports:
-            - 8888:8888
+            - "8888:8888/tcp"
+            - "8888:8888/udp"
         command: mvn clean spring-boot:run
         restart: always
     eureka-scraper-server:
@@ -29,7 +31,7 @@ services:
         command: mvn clean spring-boot:run
         restart: always
         depends_on:
-            - config-scraper
+            - config-server
     batch-scraper:
         build: ./batch-scraper
         working_dir: /batch-scraper
@@ -45,7 +47,7 @@ services:
         command: mvn clean spring-boot:run
         restart: always
         depends_on:
-            - eureka-scraper-server
+            - config-server
     checkout-rest-scraper:
         build: ./checkout-rest-scraper
         working_dir: /checkout-rest-scraper
@@ -56,11 +58,15 @@ services:
             - cloud-native-network
         expose:
             - 8082
+            - 443
+            - 80
         ports:
             - 8082:8082
+            - 80:80
+            - 443:443
         command: mvn clean spring-boot:run
         restart: always
         depends_on:
-            - batch-scraper
+            - config-server
 networks:
     cloud-native-network:

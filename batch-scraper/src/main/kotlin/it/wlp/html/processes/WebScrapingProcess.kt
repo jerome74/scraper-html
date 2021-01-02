@@ -23,7 +23,7 @@ class WebScrapingProcess : ItemProcessor<AmazonItem, List<AmazonItem>> {
         val priceblock_ourprice : org.jsoup.nodes.Element? = doc.body().getElementById("priceblock_ourprice")
 
         priceblock_ourprice?.let {
-            if(doc.title().contains(Parameters.keyword!!) && !Parameters.linksScaperBlackList.contains(doc.title()) ) {
+            if(Parameters.ckeck(doc.title()) && !Parameters.linksScaperBlackList.contains(doc.title()) ) {
 
                 Parameters.linksScaperFound.add(AmazonItem(doc.title(), item.link))
                 Parameters.linksScaperBlackList.add(doc.title())
@@ -34,7 +34,7 @@ class WebScrapingProcess : ItemProcessor<AmazonItem, List<AmazonItem>> {
         val olp_text_box  = doc.body().getElementsByClass("olp-text-box").select("span[class=a-size-base a-color-base]")
 
         if(olp_text_box.size > 0){
-                if(doc.title().contains(Parameters.keyword!!)  && !Parameters.linksScaperBlackList.contains(doc.title())  ) {
+                if(Parameters.ckeck(doc.title())  && !Parameters.linksScaperBlackList.contains(doc.title())  ) {
 
                     Parameters.linksScaperFound.add(AmazonItem(doc.title(), item.link))
                     Parameters.linksScaperBlackList.add(doc.title())
@@ -52,7 +52,7 @@ class WebScrapingProcess : ItemProcessor<AmazonItem, List<AmazonItem>> {
 
                             val a_href_Doc = Jsoup.connect("https://www.amazon.it${it.attr("href")}").get()
 
-                            if(a_href_Doc.title().contains(Parameters.keyword!!) && !Parameters.linksScaperBlackList.contains(a_href_Doc.title())) {
+                            if(Parameters.ckeck(a_href_Doc.title()) && !Parameters.linksScaperBlackList.contains(a_href_Doc.title())) {
                                 // inserisco in array di appoggio tutti i titoli priva di riversarli nella lista sraper
                                 Parameters.linksScaperBlackList.add(a_href_Doc.title())
 

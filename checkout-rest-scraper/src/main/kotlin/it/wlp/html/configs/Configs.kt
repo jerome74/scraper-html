@@ -49,3 +49,21 @@ class ConfigTelegram{
     var chatid = ""
     var username = ""
 }
+
+@EnableAsync
+class BatchRestAsyncConfigurer : AsyncConfigurer {
+
+    @Bean("asyncExecutor")
+    override fun getAsyncExecutor(): Executor? {
+        val executor = ThreadPoolTaskExecutor();
+
+        executor.setCorePoolSize(5);
+        executor.setMaxPoolSize(20);
+        executor.setQueueCapacity(10);
+        executor.setThreadNamePrefix("BatchRestAsync-");
+        executor.initialize();
+        return executor;
+    }
+
+
+}

@@ -1,17 +1,11 @@
 spring:
   application:
     name: eureka-scraper-server
-  cloud:
-    config:
-      uri: http://localhost:8888
-    loadbalancer:
-      ribbon:
-        enabled=false:
 server:
   port: 8761
 eureka:
   instance:
-    hostname: localhost
+    hostname: ${spring.cloud.client.ip-address}
   client:
     registerWithEureka: false
     fetchRegistry: false

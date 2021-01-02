@@ -4,8 +4,10 @@ import it.wlp.html.configs.ConfigProperties
 import it.wlp.html.configs.ConfigSchedule
 import it.wlp.html.configs.ConfigScrape
 import it.wlp.html.controllers.IRunnerController
+import it.wlp.html.dtos.RequestScraperDTO
 import it.wlp.html.utils.Parameters
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
 import org.json.JSONArray
@@ -42,26 +44,60 @@ class AsyncServices {
 
 
     @Async("asyncExecutor")
-    fun callAsync() : CompletableFuture<Unit>{
+    fun callAsyncGit() : CompletableFuture<Unit>{
          val supplyAsync= CompletableFuture.supplyAsync({
             runBlocking<Unit> {
-                withTimeout(configSchedule.timeout) {
-                    repeat(configSchedule.repeat) {
+                Parameters.launch = launch {
+                    withTimeout(configSchedule.timeout) {
+                        repeat(configSchedule.repeat) {
 
-                        val maps = mutableMapOf<String, JobParameter>()
+                            val maps = mutableMapOf<String, JobParameter>()
 
-                        val arrayLink = JSONArray()
+                            val arrayLink = JSONArray()
 
-                        maps.put("amazonLink", JobParameter(configScrape.link));
-                        maps.put("UUID", JobParameter(UUID.randomUUID().toString().substring(0, 8)));
+                            maps.put("amazonLink", JobParameter(configScrape.link));
+                            maps.put("UUID", JobParameter(UUID.randomUUID().toString().substring(0, 8)));
 
-                        Parameters.keyword = configScrape.keyword
+                            Parameters.addScraperParameters(configScrape.parameters)
 
-                        val jobParameters = JobParameters(maps);
-                        log.info("{IRunnerController} run jobLauncher");
-                        val jobExecution = jobLauncher.run(job, jobParameters);
+                            val jobParameters = JobParameters(maps);
+                            log.info("{IRunnerController} run jobLauncher");
+                            Parameters.jobParameters = jobLauncher.run(job, jobParameters);
 
-                        delay(configSchedule.delay)
+                            delay(configSchedule.delay)
+                        }
+                    }
+                }
+            }
+        })
+
+        return supplyAsync;
+
+    }
+
+    @Async("asyncExecutor")
+    fun callAsyncRequest(request : RequestScraperDTO) : CompletableFuture<Unit>{
+        val supplyAsync= CompletableFuture.supplyAsync({
+            runBlocking<Unit> {
+                Parameters.launch = launch {
+                    withTimeout(configSchedule.timeout) {
+                        repeat(configSchedule.repeat) {
+
+                            val maps = mutableMapOf<String, JobParameter>()
+
+                            val arrayLink = JSONArray()
+
+                            maps.put("amazonLink", JobParameter(request.link));
+                            maps.put("UUID", JobParameter(UUID.randomUUID().toString().substring(0, 8)));
+
+                            Parameters.addScraperParameters(request.parameters)
+
+                            val jobParameters = JobParameters(maps);
+                            log.info("{IRunnerController} run jobLauncher");
+                            Parameters.jobParameters = jobLauncher.run(job, jobParameters);
+
+                            delay(configSchedule.delay)
+                        }
                     }
                 }
             }

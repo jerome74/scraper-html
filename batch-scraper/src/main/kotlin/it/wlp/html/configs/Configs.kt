@@ -77,8 +77,7 @@ class ConfigProperties
 @ConfigurationProperties(prefix = "scraping")
 class ConfigScrape{
     var link = ""
-    var keyword = ""
-    var price : Double = 0.0
+    var parameters = ""
     var checkoutlink = ""
 }
 

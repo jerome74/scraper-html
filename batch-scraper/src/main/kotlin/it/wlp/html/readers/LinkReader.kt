@@ -24,25 +24,29 @@ class LinkReader : ItemReader<AmazonItem> {
         jobParameters.parameters.remove("amazonLink")
         jobParameters.parameters.remove("UUID")
 
-        log.info("[LinkReader] remove value of start parameters, amazonLink = $amazonLink, price = $price ")
+        log.info("[LinkReader] remove value of start parameters, amazonLink = $amazonLink")
     }
 
     var amazonLink : String? = null
-    var price : Double? = 0.0
 
 
     override fun read(): AmazonItem? {
 
         if (amazonLink.isNullOrEmpty()) {
 
+            log.info("[LinkReader read] amazonLink is NullOrEmpty, amazonLink = $amazonLink")
+
             if(Parameters.linksScaper.isEmpty()){
+
+                log.info("[LinkReader read] linksScaper is isEmpty, linksScaper = ${Parameters.linksScaper.isEmpty()}")
 
                 log.info("[LinkReader] reader is FINISH")
                 amazonLink = Constants.FINISH
             }
             else{
 
-                log.info("[LinkReader] pre Parameters.linksScaper size = ${Parameters.linksScaper.size}")
+                log.info("[LinkReader read] amazonLink is NOT NullOrEmpty, amazonLink = $amazonLink")
+                log.info("[LinkReader read] pre Parameters.linksScaper size = ${Parameters.linksScaper.size}")
 
                 amazonLink = Parameters.linksScaper.last().link
 

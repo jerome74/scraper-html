@@ -1,6 +1,6 @@
 spring:
   application:
-    name: cloud-scraper
+    name: config-scraper
   profiles:
     active: dev
 server:

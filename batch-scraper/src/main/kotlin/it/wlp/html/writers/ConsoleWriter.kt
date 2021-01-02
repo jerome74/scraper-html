@@ -53,7 +53,7 @@ class ConsoleWriter : ItemWriter<List<AmazonItem>> {
         if (Parameters.linksScaperFound.isNotEmpty()) {
             log.info("--------------------------------------------");
             log.info("{linksScaperFound} notify via callCheckout()");
-            scarperProxy.notifyToCheckout(Parameters.linksScaperFound.stream().map { NotifyScraperDTO(it.title, configScrape.price, it.link) }.toList())
+            scarperProxy.notifyToCheckout(Parameters.linksScaperFound.stream().map { NotifyScraperDTO(it.title, Parameters.getPrice(it.title), it.link) }.toList())
             log.info("--------------------------------------------");
         }
 

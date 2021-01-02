@@ -5,11 +5,15 @@ import it.wlp.html.dtos.NotifyScraperDTO
 import it.wlp.html.entities.Amazonitem
 import it.wlp.html.repositories.AmazonRepository
 import it.wlp.html.utils.NotifyTelegram
+import it.wlp.html.utils.TelegramUtil
 import it.wlp.html.utils.UtilFunString
+import org.json.JSONArray
 import org.jsoup.Jsoup
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
+import org.telegram.telegrambots.bots.TelegramLongPollingBot
 import org.telegram.telegrambots.meta.api.objects.Message
 import org.telegram.telegrambots.meta.api.objects.Update
 import java.io.BufferedInputStream
@@ -19,6 +23,8 @@ import java.net.http.HttpClient
 import java.net.http.HttpRequest
 import java.net.http.HttpResponse
 import java.time.Duration
+import java.util.*
+import java.util.concurrent.CompletableFuture
 import javax.ws.rs.core.UriBuilder
 import kotlin.jvm.Throws
 import kotlin.streams.toList
@@ -36,13 +42,22 @@ class CheckoutService {
     lateinit var configTelegram : ConfigTelegram
 
 
+    @Async("asyncExecutor")
+    fun callAsyncElaborate(listNotifyScraperDTO: List<NotifyScraperDTO>) : CompletableFuture<Unit> {
+        val supplyAsync= CompletableFuture.supplyAsync({
+            elaborate(listNotifyScraperDTO)
+        })
+
+        return supplyAsync;
+
+    }
 
     val log = LoggerFactory.getLogger(CheckoutService::class.java.canonicalName)
 
     fun elaborate(listNotifyScraperDTO: List<NotifyScraperDTO>) {
 
         listNotifyScraperDTO.stream().filter {
-            !amazonRepository.findByTitle("").isPresent
+            !amazonRepository.findByTitle(it.title).isPresent
         }
                 .map {
                     Amazonitem(0, it.title, it.price, it.link)
@@ -76,7 +91,8 @@ class CheckoutService {
                     log.info("[CheckoutService](priceblock_ourprice) price is ok! - $actualPrice vs $desirePrice have to notify")
 
                     //********************
-                    notifyOnTelegram("Article [${doc.title()}] price is ok! - $link , actualPrice=$actualPrice end desirePrice=$desirePrice")
+                    TelegramUtil.notifyOnTelegram("Article [${doc.title()}] price is ok! - $link , actualPrice=$actualPrice end desirePrice=$desirePrice"
+                    , configTelegram.apitoken, configTelegram.chatid)
                     //********************
                 }
                 else{
@@ -96,7 +112,8 @@ class CheckoutService {
                     log.info("[CheckoutService](olp-text-box) price is ok! - $actualPrice vs $desirePrice have to notify")
 
                     //********************
-                    notifyOnTelegram("Article [${doc.title()}] price is ok! - $link , actualPrice=$actualPrice end desirePrice=$desirePrice")
+                    TelegramUtil.notifyOnTelegram("Article [${doc.title()}] price is ok! - $link , actualPrice=$actualPrice end desirePrice=$desirePrice"
+                    , configTelegram.apitoken, configTelegram.chatid)
                     //********************
                 }
                 else{
@@ -108,35 +125,5 @@ class CheckoutService {
         }
 
     }
-
-    @Throws(Exception::class)
-    fun notifyOnTelegram(text: String) {
-
-        val message = text
-        val TOKEN = configTelegram.apitoken
-        val CHAT_ID = configTelegram.chatid
-
-        val client = HttpClient.newBuilder()
-                .connectTimeout(Duration.ofSeconds(5))
-                .version(HttpClient.Version.HTTP_2)
-                .build();
-
-        val builder = UriBuilder
-                .fromUri("https://api.telegram.org")
-                .path("/{token}/sendMessage")
-                .queryParam("chat_id",CHAT_ID )
-                .queryParam("text", message);
-
-        val request = HttpRequest.newBuilder()
-                .GET()
-                .uri(builder.build("bot" + TOKEN))
-                .timeout(Duration.ofSeconds(5))
-                .build();
-
-        val response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        println(response.body())
-
-    }
-
 }
 
