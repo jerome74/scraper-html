@@ -1,0 +1,180 @@
+{
+	"info": {
+		"_postman_id": "8b3b548b-ec57-4eeb-b0bd-b6b38fe0ec59",
+		"name": "Amazon",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "stop amazon localhost",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://192.168.1.8:8081/api-rest/stop",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"1",
+						"8"
+					],
+					"port": "8081",
+					"path": [
+						"api-rest",
+						"stop"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "scraping amazon localhost",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authentication",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ3YWx0ZXIubG9uZ283NEBnbWFpbC5jb20iLCJhdXRob3JpdGllcyI6W3siYXV0aG9yaXR5IjoiUk9MRV9BRE1JTiJ9LHsiYXV0aG9yaXR5IjoiYWRtaW46ZGVsZXRlIn0seyJhdXRob3JpdHkiOiJhZG1pbjpyZWFkIn0seyJhdXRob3JpdHkiOiJhZG1pbjp3cml0ZSJ9XSwiaWF0IjoxNjA4NzUzMzE4LCJleHAiOjE2MDg3NTUxMTh9.V3FFuqD44pJC3pIGupX3Wk2nkp-YhmbOWZ4xTdfuWjc",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"external\" : false,\r\n    \"link\" : \"https://www.amazon.it/dp/B08LBVNKT1\",\r\n    \"parameters\" : \"3080=700.00,3070=600.00,5800X=500.00\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://192.168.1.8:8081/api-rest/scraping",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"1",
+						"8"
+					],
+					"port": "8081",
+					"path": [
+						"api-rest",
+						"scraping"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "save bolletta local mock",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "   {\r\n        \"id\": \"4\",\r\n        \"cc\": \"1200004\",\r\n        \"importo\": \"33,14\",\r\n        \"scadenza\": \"01/01/2022\",\r\n        \"numero\": \"222233333311043454\",\r\n        \"owner\": \"walter longo\",\r\n        \"td\": \"567\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://850bb42b-25b0-4be3-b909-a729ef490e3d.mock.pstmn.io/api/ibolletta/savebolletta",
+							"protocol": "https",
+							"host": [
+								"850bb42b-25b0-4be3-b909-a729ef490e3d",
+								"mock",
+								"pstmn",
+								"io"
+							],
+							"path": [
+								"api",
+								"ibolletta",
+								"savebolletta"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": null,
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "login local mock",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"walter.longo74@gmail.com\",\r\n    \"password\":\"admin123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://850bb42b-25b0-4be3-b909-a729ef490e3d.mock.pstmn.io/login",
+							"protocol": "https",
+							"host": [
+								"850bb42b-25b0-4be3-b909-a729ef490e3d",
+								"mock",
+								"pstmn",
+								"io"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "Authentication",
+							"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ3YWx0ZXIubG9uZ283NEBnbWFpbC5jb20iLCJhdXRob3JpdGllcyI6W3siYXV0aG9yaXR5IjoiUk9MRV9BRE1JTiJ9LHsiYXV0aG9yaXR5IjoiYWRtaW46ZGVsZXRlIn0seyJhdXRob3JpdHkiOiJhZG1pbjpyZWFkIn0seyJhdXRob3JpdHkiOiJhZG1pbjp3cml0ZSJ9XSwiaWF0IjoxNjA1OTU5NTQ1LCJleHAiOjE2MDU5NjEzNDV9.tPftO-WGQSeBHL58ZKwHMv6_o_1VQA243C5p9cf1x7E",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": null
+				}
+			]
+		}
+	]
+}
