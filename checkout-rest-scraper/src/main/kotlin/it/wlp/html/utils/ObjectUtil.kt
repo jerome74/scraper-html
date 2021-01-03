@@ -97,7 +97,15 @@ class NotifyTelegram : TelegramLongPollingBot() {
     @Throws(TelegramApiException::class)
     override fun onUpdateReceived(update: Update?) {
 
+        log.info("ùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùù")
+        log.info("[NotifyTelegram] onUpdateReceived")
+
         if (update!!.hasMessage()) {
+
+
+            log.info("[NotifyTelegram] received message! ${update.getMessage()}")
+            log.info("ùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùù")
+
             val message = update.getMessage();
             val text = message.getText().trim();
 

@@ -30,7 +30,7 @@ class CheckoutController {
 
             log.info("[CheckoutService] on notify endpoint recieved async listNotifyScraperDTO - ${listNotifyScraperDTO.size}")
 
-            checkoutService.elaborate(listNotifyScraperDTO)
+            checkoutService.callAsyncElaborate(listNotifyScraperDTO)
 
         } catch (e: Exception) {
 
